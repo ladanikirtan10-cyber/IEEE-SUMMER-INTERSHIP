@@ -3,6 +3,7 @@ services:
   - type: web
     name: kerala-health-backend
     runtime: python
+    plan: free
     buildCommand: cd backend && pip install -r requirements.txt
     startCommand: cd backend && gunicorn app:app
     envVars:
