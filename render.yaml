@@ -1,0 +1,26 @@
+services:
+  # 1. Flask Python Backend Service
+  - type: web
+    name: kerala-health-backend
+    runtime: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: USE_SQLITE
+        value: "True"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FLASK_DEBUG
+        value: "False"
+
+  # 2. React Frontend Static Site
+  - type: web
+    name: kerala-health-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://kerala-health-backend.onrender.com/api
