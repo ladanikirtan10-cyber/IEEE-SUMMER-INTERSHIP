@@ -1,0 +1,56 @@
+# Docker Compose configuration for Health Records System
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: health_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: digital_health_system
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p" + "password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: health_flask_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - USE_SQLITE=False
+      - DB_HOST=db
+      - DB_NAME=digital_health_system
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_PORT=3306
+      - SECRET_KEY=kerala-health-key-12345!@#
+      - JWT_SECRET_KEY=jwt-health-secret-67890!@#
+    volumes:
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=http://localhost:5000/api
+    container_name: health_react_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
