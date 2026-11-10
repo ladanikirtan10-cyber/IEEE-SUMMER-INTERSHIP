@@ -6,6 +6,10 @@ This application features a curated **Kerala Emerald & Mint green design system*
 
 ---
 
+## 🌐 Live Application URLs
+
+* **Frontend (Vercel):** [https://ieee-summer-intership-rj52.vercel.app/](https://ieee-summer-intership-rj52.vercel.app/)
+* **Backend API (Render):** [https://kerala-health-backend-fl9k.onrender.com/api](https://kerala-health-backend-fl9k.onrender.com/api)
 ## Technical Stack
 
 * **Frontend:** React.js (Vite), Tailwind CSS, Lucide Icons, Recharts (Dynamic Analytics SVG Charts), jsPDF (Health summaries PDF exporter), Axios
